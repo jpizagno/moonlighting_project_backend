@@ -1,17 +1,16 @@
 const { DynamoDB, PutItemCommand } = require("@aws-sdk/client-dynamodb");
 const docClient = new DynamoDB({region: 'eu-central-1'});
 
-exports.handler =  async function(e, ctx, callback) {
+exports.handler =  async function(project, ctx, callback) {
     try {
-        var message = JSON.parse(e.body);
     
         const input = {
           "Item": {
             "id": {
-              "S": message.id
+              "S": project.id
             },
             "project": {
-              "S": message.project
+              "S": project.project
             }
           },
           "ReturnConsumedCapacity": "TOTAL",
@@ -45,9 +44,17 @@ exports.handler =  async function(e, ctx, callback) {
             }
         
         } catch (err) {
-        callback("error in response: e="+e)
+        callback("error in response: project="+project)
     }
     } catch (err) {
-      callback("error parsing input body. err="+err)
+      var httpResponse = {
+          statusCode: 500,
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Access-Control-Allow-Origin':'*'
+        },
+          body: 'error parsing input body. project='+JSON.stringify(project)
+          }
+      callback(null, httpResponse);
     }
 };
