@@ -177,7 +177,7 @@ resource "aws_api_gateway_deployment" "example" {
   ]
 
   rest_api_id = "${aws_api_gateway_rest_api.moonlightingapi.id}"
-  stage_name  = "moonlingprojectstage"
+  stage_name  = "stage"
 }
 
 resource "aws_lambda_permission" "apigw_put_project" {
