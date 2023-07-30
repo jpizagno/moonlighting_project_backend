@@ -10,8 +10,8 @@ exports.handler =  async function(e, ctx, callback) {
             "id": {
               "S": message.id
             },
-            "message": {
-              "S": message.message
+            "project": {
+              "S": message.project
             }
           },
           "ReturnConsumedCapacity": "TOTAL",
@@ -26,8 +26,9 @@ exports.handler =  async function(e, ctx, callback) {
                 var httpResponse = {
                     statusCode: code,
                     headers: {
-                        'Content-Type': 'text/html; charset=utf-8'
-                    },
+                      'Content-Type': 'text/html; charset=utf-8',
+                      'Access-Control-Allow-Origin':'*'
+                  },
                     body: '<p>Insert Table Success</p>'
                     }
                 callback(null, httpResponse);
@@ -35,8 +36,9 @@ exports.handler =  async function(e, ctx, callback) {
                 var httpResponse = {
                     statusCode: 500,
                     headers: {
-                        'Content-Type': 'text/html; charset=utf-8'
-                    },
+                      'Content-Type': 'text/html; charset=utf-8',
+                      'Access-Control-Allow-Origin':'*'
+                  },
                     body: '<p>Could not update table</p>'
                     }
                 callback(null, httpResponse);

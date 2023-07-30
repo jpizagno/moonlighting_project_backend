@@ -11,11 +11,9 @@ exports.handler =  async function(e, ctx, callback) {
           "TableName": "moonlighting-projects" 
         };
         
-        
         let scanResults = [];
         let items;
     
-        
         try {
             do {
                 items = await docClient.scan(params);
@@ -26,8 +24,9 @@ exports.handler =  async function(e, ctx, callback) {
           var httpResponse = {
               statusCode: 200,
               headers: {
-                  'Content-Type': 'text/html; charset=utf-8'
-              },
+                'Content-Type': 'text/html; charset=utf-8',
+                'Access-Control-Allow-Origin':'*'
+            },
               body: JSON.stringify(items),
               "isBase64Encoded": false
           }
@@ -37,8 +36,9 @@ exports.handler =  async function(e, ctx, callback) {
             var httpResponse = {
                 statusCode: 500,
                 headers: {
-                    'Content-Type': 'text/html; charset=utf-8'
-                },
+                  'Content-Type': 'text/html; charset=utf-8',
+                  'Access-Control-Allow-Origin':'*'
+              },
                 body: JSON.stringify(e),
                 "isBase64Encoded": false
             }

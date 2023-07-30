@@ -15,7 +15,7 @@ resource "aws_dynamodb_table" "moonlighting-projects" {
   read_capacity  = 5
   write_capacity = 5
   hash_key       = "id"
-  range_key      = "message"
+  range_key      = "project"
 
   attribute {
     name = "id"
@@ -23,7 +23,7 @@ resource "aws_dynamodb_table" "moonlighting-projects" {
   }
 
   attribute {
-    name = "message"
+    name = "project"
     type = "S"
   }
 
@@ -119,11 +119,33 @@ resource "aws_api_gateway_method" "post" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method_response" "cors_post_200" {
+    rest_api_id   = "${aws_api_gateway_rest_api.moonlightingapi.id}"
+    resource_id   = "${aws_api_gateway_resource.resource.id}"
+    http_method   = "${aws_api_gateway_method.post.http_method}"
+    status_code   = "200"
+    response_parameters = {
+      "method.response.header.Access-Control-Allow-Origin" = "true",
+    }
+    depends_on = ["aws_api_gateway_method.post"]
+}
+
 resource "aws_api_gateway_method" "get" {
   rest_api_id   = "${aws_api_gateway_rest_api.moonlightingapi.id}"
   resource_id   = "${aws_api_gateway_resource.resource.id}"
   http_method   = "GET"
   authorization = "NONE"
+}
+
+resource "aws_api_gateway_method_response" "cors_get_200" {
+    rest_api_id   = "${aws_api_gateway_rest_api.moonlightingapi.id}"
+    resource_id   = "${aws_api_gateway_resource.resource.id}"
+    http_method   = "${aws_api_gateway_method.get.http_method}"
+    status_code   = "200"
+    response_parameters = {
+      "method.response.header.Access-Control-Allow-Origin" = "true",
+    }
+    depends_on = ["aws_api_gateway_method.get"]
 }
 
 resource "aws_api_gateway_integration" "lambda_put_project" {

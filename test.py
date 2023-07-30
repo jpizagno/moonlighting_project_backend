@@ -3,6 +3,7 @@
 import json
 import requests
 from datetime import datetime
+import uuid
 
 
 def _get_base_url():
@@ -43,7 +44,8 @@ def _mock_moonlightingproject():
         JSON meassage.
     """
     date_time = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    return {"id": "<20111114174239.25659.5817@samples.moonlightingproject.org>", "message":"Queued. Thank you. Date, Time: "+str(date_time)}
+    project  = {"title":"my project", "description": "cool thing"}
+    return {"id": str(uuid.uuid4()), "project": json.dumps(project)}
 
 
 def post_moonlightingproject(lambda_api_url, moonlightingproject_message):
